@@ -1,20 +1,20 @@
 package com.example.simpletodo
 
-import androidx.recyclerview.widget.RecyclerView
-import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RemoteViews
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 
 //a bridge for displaying instructions on the recycleview class
 
-class TaskItemAdapter(val listOfItems: List<String>): RecyclerView.Adapter<TaskItemAdapter.ViewHolder>()
+class TaskItemAdapter(val listOfItems: List<String>, val longClickListener: OnLongClickListener): RecyclerView.Adapter<TaskItemAdapter.ViewHolder>()
 {
+
+    interface OnLongClickListener{
+        fun onItemLongClicked(position: Int)
+    }
 
     //Provide a direct reference to each of the views within a data item
     //used to cache the views within the item layout for fast access
@@ -23,6 +23,11 @@ class TaskItemAdapter(val listOfItems: List<String>): RecyclerView.Adapter<TaskI
         val textView: TextView
         init {
             textView = itemView.findViewById(android.R.id.text1)
+
+            itemView.setOnLongClickListener{
+                longClickListener.onItemLongClicked(adapterPosition)
+                true
+            }
         }
     }
 
